@@ -1,308 +1,81 @@
 <!DOCTYPE html>
-<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-  
-<style type="text/css">
-    label { 
-  display: inline-block; width: 150px; text-align: left; 
-}
 
+<head>
+  <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="turingTable.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-input {
-  display: inline-block;
-}
+  <title>Turing Machine</title>
 
-#palavra{
-  border:none;
-}
-
-#div_botoes_insercao{
-  width: 400px;
-  margin-top: 20px;
-  margin-bottom: 5px;
-  margin-left: 20px;
-}
-
-#div_entradas {
-  background-color: #4CAF50;
-  border: 1px solid #eeeeee;
-  margin-bottom: 5px;
-  width: 100%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-#div_botao {
-  margin-top: 20px;
-}
-
-#tabela_turing, th, td {
-   text-align: center;
-   border-collapse: collapse;
-   border: 1px solid #dddddd;
-}
-
-#tabela_turing tr:first-child{
-    background: #eeeeee;
-}
-
-#tabela_turing td:nth-child(1) { 
-  background: #eeeeee; 
-}
-
-#div_matrix{
-  display: inline-block;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-#div_mae{
-    display: inline-block;
-    border: 1px solid #dfdfdf;
-}
-#btnAddCol, #btnAddLin {
-    background-color: #4CAF50; 
-    border: none;
-    color: white;
-    padding: 5px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
-#btn_json{
-  background-color: #4CAFff; 
-  border: none;
-  float:right;
-    color: white;
-    padding: 5px 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
-#btnRemoveCol{
-  background-color: white;
-  border: 1px solid #dddddd;
-  color: #ff0000;
-  margin-left: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-
-#btnRemoveLin {
-  background-color: white;
-  border: 1px solid #f0f0f0;
-  color: #ff0000;
-  float:left;
-  margin-left: 0px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-}
-
-
-.unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-</style>
-
-
-<script type="text/javascript">//<![CDATA[
-$(window).on('load', function() {
-	$(document).ready(function() {
-	  $('#btnAddCol').click(function() {
-	    addColumn(document.getElementById("tabela_turing"));
-	  });
-	  
-	  $('#btnAddLin').click(function() {
-	    addRow(document.getElementById("tabela_turing"));
-	  });
-			  
-	  $("#tabela_turing").on( "click", "#btnRemoveCol", function(){
-	  		removeColumn(document.getElementById("tabela_turing"), $(this)[0].parentElement.cellIndex);
-	  } );
-	  
-	  $("#tabela_turing").on( "click", "#btnRemoveLin", function(){
-	  		removeLine(document.getElementById("tabela_turing"), $(this)[0].parentElement.parentElement.rowIndex);
-	  } );
-	  
-	  $("#btn_json").click(function(){
-	  	saveJson(document.getElementById("tabela_turing"));
-	});
-});
-
-function saveJson(tbl){
-    function Obj(word,states,symbolsList){
-    	this.word = word;
-    	this.states = states;
-      this.symbolsList = symbolsList;
-    };
-    
-    function State(){
-    	this.symbols = [];
-    };
-    
-    function Instruction(text){
-    	this.instruction = text;
-    };
-
-    
-    var states = new Array();
-    var symbolsList = [];
-    for(var x = 1; x < tbl.rows[0].cells.length; x++){
-    	console.log(tbl.rows[0].cells[x]);	symbolsList.push(tbl.rows[0].cells[x].innerText);
-    }
-    
-    for(var y = 1; y < tbl.rows.length; y++){
-    	var state = new State();
-      
-      for(var x = 1; x < tbl.rows[y].cells.length; x++){
-        var instruction = new Instruction(tbl.rows[y].cells[x].innerHTML);
-        state.symbols.push(instruction);
-      }
-      
-      states.push(state);
-    }
-    
-    var obj = new Obj(document.getElementById("palavra").value, states, symbolsList);
-		console.log(JSON.stringify(obj));
-       
-}
-
-function updateStateNumbers(tbl){
-  var button = document.createElement("input");
-    button.value = "-";
-    button.type = "button";
-    button.id = "btnRemoveLin";
-    button.innerHTML = "-";
-    
-	for(var y = 0; y < tbl.rows.length; y++){
- 
-  
-  	if(y!=0){
-    	tbl.rows[y].cells[0].innerHTML ="";
-        tbl.rows[y].cells[0].append(button);
-  		tbl.rows[y].cells[0].innerHTML += "<b>q"+(y-1)+"</br>";
-     }
-  }
-}
-
-function removeLine(tbl, lineNum){
-  tbl.rows[lineNum].remove();
-  updateStateNumbers(document.getElementById("tabela_turing"));
-}
-
-function removeColumn(tbl, colNum){
-	for(var y = 0; y < tbl.rows.length; y++){
-  	tbl.rows[y].cells[colNum].remove();
-  }
-}
-
-function addColumn(tbl){
-  var button = document.createElement("input");
-  button.value = "-";
-  button.type = "button";
-  button.id = "btnRemoveCol";
-  button.innerHTML = "-";
-  console.log( button.class);
-  //button.children[0].class = "unselectable";
-    
-	for(var y = 0; y < tbl.rows.length; y++){
-  	var cell = tbl.rows[y].insertCell(tbl.rows[y].cells.length);
-    cell.contentEditable = true;
-  	if(y==0){
-    	console.log(cell);
-    	cell.innerHTML = "<b>letra "+cell.cellIndex+"</b>";
-      cell.append(button);
-    }else{
-    	cell.innerHTML = "Instr.";
-    }
-    
-    //var cell = row.insertCell();
-  }
-}
-
-function addRow(tbl){
-  var button = document.createElement("input");
-  button.value = "-";
-  button.type = "button";
-  button.id = "btnRemoveLin";
-  button.innerHTML = "-";
-  
-	var row = tbl.insertRow(tbl.rows.length);
-  for(var x = 0; x < tbl.rows[0].cells.length; x++){
-  	var cell = row.insertCell();
-  	if(x==0){
-      cell.append(button);
-    	cell.innerHTML += "<b>q"+row.rowIndex+"</b>";
-      
-    }else{
-    	cell.innerHTML = "Instr.";
-      cell.contentEditable = true;
-    }
-  }
-}
-
-});
-
-</script>
-
-<title>Turing Machine</title>
-  
 </head>
 
 <body>
-  
-  <div id="div_mae">
 
+  <div id="div_mae">
     <div id="div_entradas">
-    <label for="palavra"><b style="color:white">&nbsp;&nbsp;Palavra de entrada:</b></label>
+      <label for="palavra">
+        <b style="color:white">&nbsp;&nbsp;Palavra de entrada:</b>
+      </label>
       <input id="palavra" type="text">
     </div>
 
     <div id="div_botoes_insercao">
-      <input type="button" value="+ símbolo" id="btnAddCol"> 
+      <input type="button" value="+ símbolo" id="btnAddCol">
       <input type="button" value="+ estado" id="btnAddLin">
-    </div>  
+    </div>
 
 
     <div id="div_matrix">
       <table border="1" id="tabela_turing">
-        <tbody><tr> 
-          <th style="width: 50px"></th>
-          <th>β</th>
-          <th>*</th>
-        </tr>
+        <tbody>
+          <tr>
+            <th style="width: 50px"></th>
+            <th>β</th>
+            <th>*</th>
+          </tr>
 
-        <tr>
-        <td><input type="button" value="-" id="btnRemoveLin"><b>q0<b></b></b></td>
-          <td contenteditable="true">(q1,X,R)</td>
-          <td contenteditable="true">(q3,Y,R)</td>
-        </tr>
+          <tr>
+            <td>
+              <input type="button" value="-" id="btnRemoveLin">
+              <b>q0
+                <b></b>
+              </b>
+            </td>
+            <td contenteditable="true">q1,X,R</td>
+            <td contenteditable="true">q3,Y,R</td>
+          </tr>
 
-        <tr>
-          <td><input type="button" value="-" id="btnRemoveLin"><b>q1<b></b></b></td>
-          <td contenteditable="true">(q1,X,R)</td>
-          <td contenteditable="true">(q0,X,L)</td>
-        </tr>
+          <tr>
+            <td>
+              <input type="button" value="-" id="btnRemoveLin">
+              <b>q1
+                <b></b>
+              </b>
+            </td>
+            <td contenteditable="true">q1,X,R</td>
+            <td contenteditable="true">q0,X,L</td>
+          </tr>
 
-      </tbody></table>
+        </tbody>
+      </table>
     </div>
 
 
     <div id="div_botao">
       <input type="button" value="Submeter" id="btn_json">
     </div>
-    </div>
+  </div>
 
-</body></html>
+  <div id="div_instrucoes">
+    <h1>Instruções</h1>
+    <ls>
+      <li>Adicione símbolos ou estados com os respectivos botões</li>
+      <li>Insira a instrução nas células com o formato <div style="display: inline;border: 1px solid #dddddd;"><b><i></i>estado_de_origem, simbolo_de_transição, ação_na_fita</i></b></div></li>
+      <li>Submeta a palavra para a Máquina de Turing</li>
+    </ls>
+
+  </div>
+
+</body>
+
+</html>
