@@ -88,7 +88,7 @@ function changeLastEvent(tbl, rowIndex) {
         lastEvent = rowIndex;
 
         for (var y = 1; y < tbl.rows.length; y++) {
-            tbl.rows[y].cells[0].style.backgroundColor = "#ffffff"
+            tbl.rows[y].cells[0].style.backgroundColor = "#eeeeee"
         }
 
         console.log(tbl.rows[rowIndex].cells[0].style.backgroundColor = "#ff8888");
