@@ -88,8 +88,8 @@ input {
 }
 
 #btnRemoveCol{
-  background-color: white;
-  border: 1px solid #dddddd;
+  background-color: #eeeeee;
+  border: 1px solid #dfdfdf;
   color: #ff0000;
   margin-left: 10px;
   text-align: center;
@@ -99,8 +99,8 @@ input {
 }
 
 #btnRemoveLin {
-  background-color: white;
-  border: 1px solid #f0f0f0;
+  background-color: #eeeeee;
+  border: 1px solid #dfdfdf;
   color: #ff0000;
   float:left;
   margin-left: 0px;

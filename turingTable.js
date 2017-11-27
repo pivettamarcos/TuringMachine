@@ -16,10 +16,23 @@ $(document).ready(function () {
     });
 
     $("#btn_json").click(function () {
-        saveJson(document.getElementById("tabela_turing"));
+        if (lastEvent !== undefined) {
+            document.getElementById("alerta").innerText = "";
+            saveJson(document.getElementById("tabela_turing"));
+        } else {
+            document.getElementById("alerta").innerText = "Defina o último estado";
+        }
+
     });
 
+    $("#tabela_turing").on("click", "td", function () {
+        if ($(this)[0].cellIndex == 0){
+            changeLastEvent(document.getElementById("tabela_turing"), $(this)[0].parentElement.rowIndex);
+        }
+    });
 });
+
+var lastEvent = undefined;
 
 function saveJson(tbl) {
     class JsonObj{
@@ -53,7 +66,7 @@ function saveJson(tbl) {
     var states = [];
 
     for (var y = 1; y < tbl.rows.length; y++) {
-        var state = new State((y == 1 ? true : false),tbl.rows[y].cells[0].innerText);
+        var state = new State((y == lastEvent ? true : false), tbl.rows[y].cells[0].innerText);
 
         for (var x = 1; x < tbl.rows[y].cells.length; x++) {
             console.log(tbl.rows[0].cells[x].innerText);
@@ -70,6 +83,18 @@ function saveJson(tbl) {
     console.log(JSON.stringify(obj));
 }
 
+function changeLastEvent(tbl, rowIndex) {
+    if (rowIndex > 0 && rowIndex < tbl.rows.length) {
+        lastEvent = rowIndex;
+
+        for (var y = 1; y < tbl.rows.length; y++) {
+            tbl.rows[y].cells[0].style.backgroundColor = "#ffffff"
+        }
+
+        console.log(tbl.rows[rowIndex].cells[0].style.backgroundColor = "#ff8888");
+    }
+}
+
 function updateStateNumbers(tbl) {
     var button = document.createElement("input");
     button.value = "-";
@@ -79,9 +104,9 @@ function updateStateNumbers(tbl) {
 
     for (var y = 0; y < tbl.rows.length; y++) {
         if (y != 0) {
-            tbl.rows[y].cells[0].innerHTML = "";
+            var temp = tbl.rows[y].cells[0].innerHTML;
             tbl.rows[y].cells[0].append(button);
-            tbl.rows[y].cells[0].innerHTML += "<b>q" + (y - 1) + "</br>";
+            tbl.rows[y].cells[0].innerHTML = temp;
         }
     }
 }

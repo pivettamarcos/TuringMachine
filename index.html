@@ -19,6 +19,8 @@
       <input id="palavra" type="text">
     </div>
 
+    <p id="alerta" style="margin-left: 20px; color: darkred";"></p>
+
     <div id="div_botoes_insercao">
       <input type="button" value="+ símbolo" id="btnAddCol">
       <input type="button" value="+ estado" id="btnAddLin">
@@ -60,7 +62,8 @@
       </table>
     </div>
 
-
+   
+      
     <div id="div_botao">
       <input type="button" value="Submeter" id="btn_json">
     </div>
@@ -72,6 +75,8 @@
       <li>Adicione símbolos ou estados com os respectivos botões</li>
       <li>Insira a instrução nas células com o formato <div style="display: inline;border: 1px solid #dddddd;"><b><i></i>estado_de_origem, simbolo_de_transição, ação_na_fita</i></b></div></li>
       <li>Submeta a palavra para a Máquina de Turing</li>
+      <li>O estado na primeira linha sempre será o estado inicial</li>
+      <li>Defina o estado final clicando sobre a célula correspondente</li>
     </ls>
 
   </div>
