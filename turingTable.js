@@ -16,23 +16,23 @@ $(document).ready(function () {
     });
 
     $("#btn_json").click(function () {
-        if (lastEvent !== undefined) {
+        if (lastEvents.length > 0) {
             document.getElementById("alerta").innerText = "";
             saveJson(document.getElementById("tabela_turing"));
         } else {
-            document.getElementById("alerta").innerText = "Defina o último estado";
+            document.getElementById("alerta").innerText = "Defina pelo menos um estado final";
         }
 
     });
 
     $("#tabela_turing").on("click", "td", function () {
-        if ($(this)[0].cellIndex == 0){
-            changeLastEvent(document.getElementById("tabela_turing"), $(this)[0].parentElement.rowIndex);
+        if ($(this)[0].cellIndex == 0 && $(this)[0].parentElement.rowIndex != 1){
+            toggleLastEvent(document.getElementById("tabela_turing"), $(this)[0].parentElement.rowIndex);
         }
     });
 });
 
-var lastEvent = undefined;
+var lastEvents = [];
 
 function saveJson(tbl) {
     class JsonObj{
@@ -66,10 +66,9 @@ function saveJson(tbl) {
     var states = [];
 
     for (var y = 1; y < tbl.rows.length; y++) {
-        var state = new State((y == lastEvent ? true : false), tbl.rows[y].cells[0].innerText);
-
+        var state = new State(($.inArray((tbl.rows[y].cells[0].innerText), lastEvents) == -1 ? false : true), tbl.rows[y].cells[0].innerText);
+        
         for (var x = 1; x < tbl.rows[y].cells.length; x++) {
-            console.log(tbl.rows[0].cells[x].innerText);
             var partsOfStr = tbl.rows[y].cells[x].innerHTML.split(',');
             var transition = new Transition("transition" + x + y, partsOfStr[0], tbl.rows[0].cells[x].innerText, partsOfStr[1], partsOfStr[2]);
             transitions.push(transition);
@@ -81,17 +80,45 @@ function saveJson(tbl) {
 
     var obj = new JsonObj("Minha máquina",document.getElementById("palavra").value, transitions, states);
     console.log(JSON.stringify(obj));
+
+    $.ajax({
+        type: 'post',
+        url: 'https://httpbin.org/post',
+        data: JSON.stringify(obj),
+        contentType: "application/json; charset=utf-8",
+        traditional: true,
+        success: function (data) {
+            console.log(data);
+        }
+    });
 }
 
-function changeLastEvent(tbl, rowIndex) {
+function toggleLastEvent(tbl, rowIndex) {
     if (rowIndex > 0 && rowIndex < tbl.rows.length) {
-        lastEvent = rowIndex;
+        if($.inArray(tbl.rows[rowIndex].cells[0].innerText, lastEvents) == -1){
+            lastEvents.push(tbl.rows[rowIndex].cells[0].innerText);
+            console.log(lastEvents);
+            for (var y = 2; y < tbl.rows.length; y++) {
+                tbl.rows[y].cells[0].style.backgroundColor = "#eeeeee"
+            }
+    
+            for(var indexes = 0; indexes < lastEvents.length; indexes++)
+                for (var y = 1; y < tbl.rows.length; y++) 
+                    if(tbl.rows[y].cells[0].innerText == lastEvents[indexes])
+                        tbl.rows[y].cells[0].style.backgroundColor = "#ffcccc";
+        }else{
+            lastEvents.splice(lastEvents.indexOf(tbl.rows[rowIndex].cells[0].innerText), 1);
+            console.log(lastEvents);
 
-        for (var y = 1; y < tbl.rows.length; y++) {
-            tbl.rows[y].cells[0].style.backgroundColor = "#eeeeee"
+            for (var y = 2; y < tbl.rows.length; y++) {
+                tbl.rows[y].cells[0].style.backgroundColor = "#eeeeee"
+            }
+    
+            for(var indexes = 0; indexes < lastEvents.length; indexes++)
+                for (var y = 1; y < tbl.rows.length; y++) 
+                    if(tbl.rows[y].cells[0].innerText == lastEvents[indexes])
+                        tbl.rows[y].cells[0].style.backgroundColor = "#ffcccc";
         }
-
-        console.log(tbl.rows[rowIndex].cells[0].style.backgroundColor = "#ff8888");
     }
 }
 
@@ -102,18 +129,30 @@ function updateStateNumbers(tbl) {
     button.id = "btnRemoveLin";
     button.innerHTML = "-";
 
-    for (var y = 0; y < tbl.rows.length; y++) {
+    for (var y = 2; y < tbl.rows.length; y++) {
         if (y != 0) {
             var temp = tbl.rows[y].cells[0].innerHTML;
+            tbl.rows[y].cells[0].innerHTML ="";
             tbl.rows[y].cells[0].append(button);
-            tbl.rows[y].cells[0].innerHTML = temp;
+            tbl.rows[y].cells[0].innerHTML += "<b>q"+(y-1)+"</b>";
         }
     }
 }
 
 function removeLine(tbl, lineNum) {
     tbl.rows[lineNum].remove();
+
     updateStateNumbers(document.getElementById("tabela_turing"));
+
+    lastEvents = [];
+    for (var y = 2; y < tbl.rows.length; y++) {
+        if(tbl.rows[y].cells[0].style.backgroundColor == "rgb(255, 204, 204)"){
+            lastEvents.push(tbl.rows[y].cells[0].innerText);
+        }
+
+    }
+
+    console.log(lastEvents);
 }
 
 function removeColumn(tbl, colNum) {
@@ -128,14 +167,12 @@ function addColumn(tbl) {
     button.type = "button";
     button.id = "btnRemoveCol";
     button.innerHTML = "-";
-    console.log(button.class);
     //button.children[0].class = "unselectable";
 
     for (var y = 0; y < tbl.rows.length; y++) {
         var cell = tbl.rows[y].insertCell(tbl.rows[y].cells.length);
         cell.contentEditable = true;
         if (y == 0) {
-            console.log(cell);
             cell.innerHTML = "<b>letra " + cell.cellIndex + "</b>";
             cell.append(button);
         } else {
@@ -156,7 +193,7 @@ function addRow(tbl) {
         var cell = row.insertCell();
         if (x == 0) {
             cell.append(button);
-            cell.innerHTML += "<b>q" + row.rowIndex + "</b>";
+            cell.innerHTML += "<b>q" + (row.rowIndex-1) + "</b>";
 
         } else {
             cell.innerHTML = "Instr.";
