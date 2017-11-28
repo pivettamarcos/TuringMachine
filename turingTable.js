@@ -16,6 +16,7 @@ $(document).ready(function () {
     });
 
     $("#btn_json").click(function () {
+        document.getElementById("div_resposta").innerText = "";
         if (lastEvents.length > 0) {
             document.getElementById("alerta").innerText = "";
             saveJson(document.getElementById("tabela_turing"));
@@ -79,16 +80,20 @@ function saveJson(tbl) {
     };
 
     var obj = new JsonObj("Minha máquina",document.getElementById("palavra").value, transitions, states);
-    console.log(JSON.stringify(obj));
+    console.log(JSON.stringify(obj, null, 2));
 
     $.ajax({
         type: 'post',
-        url: 'https://httpbin.org/post',
+        url: 'http://teoria.nicolas.eti.br:8080/send',
         data: JSON.stringify(obj),
         contentType: "application/json; charset=utf-8",
         traditional: true,
         success: function (data) {
             console.log(data);
+            if(data.FinalState)
+                document.getElementById("div_resposta").innerText = "A palavra foi aceita pela máquina";
+            else
+                document.getElementById("div_resposta").innerText = "A palavra não foi aceita pela máquina";
         }
     });
 }

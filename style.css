@@ -56,9 +56,10 @@ input {
 }
 
 #div_matrix{
-  display: inline-block;
+  display: block;
   margin-left: 20px;
   margin-right: 20px;
+  margin-bottom: 10px;
 }
 #div_mae{
     display: inline-block;
