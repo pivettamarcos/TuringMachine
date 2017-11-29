@@ -84,7 +84,7 @@ function saveJson(tbl) {
 
     $.ajax({
         type: 'post',
-        url: 'http://teoria.nicolas.eti.br:8080/send',
+        url: 'https://teoria.nicolas.eti.br:8080/send',
         data: JSON.stringify(obj),
         contentType: "application/json; charset=utf-8",
         traditional: true,
@@ -181,7 +181,7 @@ function addColumn(tbl) {
             cell.innerHTML = "<b>letra " + cell.cellIndex + "</b>";
             cell.append(button);
         } else {
-            cell.innerHTML = "Instr.";
+            cell.innerHTML = "";
         }
     }
 }
@@ -201,7 +201,7 @@ function addRow(tbl) {
             cell.innerHTML += "<b>q" + (row.rowIndex-1) + "</b>";
 
         } else {
-            cell.innerHTML = "Instr.";
+            cell.innerHTML = "";
             cell.contentEditable = true;
         }
     }
