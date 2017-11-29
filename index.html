@@ -23,7 +23,7 @@
       <label for="palavra">
         <b style="color:white">&nbsp;&nbsp;Palavra de entrada:</b>
       </label>
-      <input id="palavra" type="text" value = "ab"> 
+      <input id="palavra" type="text" value = "aaabbbcccccc"> 
     </div>
 
     <p id="alerta" style="margin-left: 20px; color: darkred";"></p>
@@ -39,15 +39,28 @@
         <tbody>
           <tr>
             <th style="width: 50px"></th>
-            <th>
-                <b>*</b>
-            </th>
             <th contenteditable="true">
                 <b>a</b>
                 <input type="button" value="-" id="btnRemoveCol">
             </th>
             <th contenteditable="true">
                 <b>b</b>
+                <input type="button" value="-" id="btnRemoveCol">
+            </th>
+            <th contenteditable="true">
+                <b>c</b>
+                <input type="button" value="-" id="btnRemoveCol">
+            </th>
+            <th contenteditable="true">
+                <b>A</b>
+                <input type="button" value="-" id="btnRemoveCol">
+            </th>
+            <th contenteditable="true">
+                <b>B</b>
+                <input type="button" value="-" id="btnRemoveCol">
+            </th>
+            <th contenteditable="true">
+                <b>C</b>
                 <input type="button" value="-" id="btnRemoveCol">
             </th>
           </tr>
@@ -58,9 +71,12 @@
                 <b></b>
               </b>
             </td>
-            <td contenteditable="true">q1,*,R</td>
             <td contenteditable="true">q1,A,R</td>
+            <td contenteditable="true">q3,B,R</td>
             <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true">q5,C,R</td>
           </tr>
 
           <tr>
@@ -68,10 +84,13 @@
               <input type="button" value="-" id="btnRemoveLin">
               <b>q1</b>
             </td>
-            
+
+            <td contenteditable="true">q1,a,R</td>
+            <td contenteditable="true">q1,b,R</td>
+            <td contenteditable="true">q2,C,L</td>
             <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true">q2,B,R</td>
+            <td contenteditable="true">q1,B,R</td>
+            <td contenteditable="true">q1,C,R</td>
           </tr>
 
           <tr>
@@ -79,7 +98,52 @@
                 <input type="button" value="-" id="btnRemoveLin">
                 <b>q2</b>
               </td>
-              
+
+              <td contenteditable="true">q2,a,L</td>
+              <td contenteditable="true">q2,b,L</td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true">q0,A,R</td>
+              <td contenteditable="true">q2,B,L</td>
+              <td contenteditable="true">q2,C,L</td>
+          </tr>
+
+          <tr>
+              <td>
+                <input type="button" value="-" id="btnRemoveLin">
+                <b>q3</b>
+              </td>
+
+              <td contenteditable="true"></td>
+              <td contenteditable="true">q3,b,R</td>
+              <td contenteditable="true">q4,C,L</td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true">q3,C,R</td>
+          </tr>
+
+          <tr>
+              <td>
+                <input type="button" value="-" id="btnRemoveLin">
+                <b>q4</b>
+              </td>
+ 
+              <td contenteditable="true"></td>
+              <td contenteditable="true">q4,b,L</td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true">q0,B,R</td>
+              <td contenteditable="true">q4,C,L</td>
+          </tr>
+
+          <tr>
+              <td>
+                <input type="button" value="-" id="btnRemoveLin">
+                <b>q5</b>
+              </td>
+
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
               <td contenteditable="true"></td>
               <td contenteditable="true"></td>
               <td contenteditable="true"></td>
