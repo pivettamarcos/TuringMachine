@@ -11,13 +11,19 @@
 
 <body>
 
-  <p style="font-size:20px !important;">Máquina de Turing</p>
-  <div id="div_mae">
+  <div style="padding-top:10px;height: 40px;background-color: #e8ece8;">
+      <p style="margin-left:20px;color: #444444; display: inline; font-size:25px !important;text-align:left">Máquina de Turing</p>
+      
+  </div>
+  <div style="position:absolute"> 
+    <div style="display: inline-block; background-color:#e8ece8; width:5px;height: 90px;"></div>
+  </div>
+  <div id="div_mae" style="margin-left:10px; margin-top: 10px;">
     <div id="div_entradas">
       <label for="palavra">
         <b style="color:white">&nbsp;&nbsp;Palavra de entrada:</b>
       </label>
-      <input id="palavra" type="text">
+      <input id="palavra" type="text" value = "ab"> 
     </div>
 
     <p id="alerta" style="margin-left: 20px; color: darkred";"></p>
@@ -33,8 +39,17 @@
         <tbody>
           <tr>
             <th style="width: 50px"></th>
-            <th>β</th>
-            <th>*</th>
+            <th>
+                <b>*</b>
+            </th>
+            <th contenteditable="true">
+                <b>a</b>
+                <input type="button" value="-" id="btnRemoveCol">
+            </th>
+            <th contenteditable="true">
+                <b>b</b>
+                <input type="button" value="-" id="btnRemoveCol">
+            </th>
           </tr>
 
           <tr>
@@ -43,25 +58,37 @@
                 <b></b>
               </b>
             </td>
-            <td contenteditable="true">q1,X,R</td>
-            <td contenteditable="true">q3,Y,R</td>
+            <td contenteditable="true">q1,*,R</td>
+            <td contenteditable="true">q1,A,R</td>
+            <td contenteditable="true"></td>
           </tr>
 
           <tr>
             <td>
               <input type="button" value="-" id="btnRemoveLin">
-              <b>q1
-                <b></b>
-              </b>
+              <b>q1</b>
             </td>
-            <td contenteditable="true">q1,X,R</td>
-            <td contenteditable="true">q0,X,L</td>
+            
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true">q2,B,R</td>
+          </tr>
+
+          <tr>
+              <td>
+                <input type="button" value="-" id="btnRemoveLin">
+                <b>q2</b>
+              </td>
+              
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
+              <td contenteditable="true"></td>
           </tr>
 
         </tbody>
       </table>
     </div>
-    <div id="div_resposta" style="display:inline">
+    <div id="div_resposta" style="display:inline-block;margin-left: 20px">
       
     </div>
       
@@ -77,11 +104,12 @@
       <li>Insira a instrução nas células com o formato <div style="display: inline;border: 1px solid #dddddd;"><b><i></i>estado_de_origem, simbolo_de_transição, ação_na_fita</i></b></div></li>
       <li>Submeta a palavra para a Máquina de Turing</li>
       <li>O estado na primeira linha sempre será o estado inicial</li>
-      <li>Defina o estado final clicando sobre a célula correspondente</li>
+      <li>Defina o estado final clicando sobre a(s) célula(s) correspondente</li>
     </ls>
 
   </div>
-
+  <div style="margin-top: 50px;height: 40px;background-color: #e8ece8;">
+      
 </body>
 
 </html>

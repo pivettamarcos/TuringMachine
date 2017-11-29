@@ -90,10 +90,13 @@ function saveJson(tbl) {
         traditional: true,
         success: function (data) {
             console.log(data);
-            if(data.FinalState)
+            if(data.FinalState){
+                document.getElementById("div_resposta").style.backgroundColor = "#e0ffe0";
                 document.getElementById("div_resposta").innerText = "A palavra foi aceita pela máquina";
-            else
+            }else{
+                document.getElementById("div_resposta").style.backgroundColor = "#ffe0e0";
                 document.getElementById("div_resposta").innerText = "A palavra não foi aceita pela máquina";
+            }
         }
     });
 }

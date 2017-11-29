@@ -63,7 +63,8 @@ input {
 }
 #div_mae{
     display: inline-block;
-    border: 1px solid #dfdfdf;
+    border: 1px solid #eeeeee;
+    background-color: #f9fff9;
 }
 #btnAddCol, #btnAddLin {
     background-color: #4CAF50; 
